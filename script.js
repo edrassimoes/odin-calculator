@@ -3,8 +3,6 @@ const display =  document.querySelector(".display");
 const clear = document.querySelector(".clear");
 const result = document.querySelector(".result");
 
-let input = '';
-
 function add(first, second) {
     return first + second;
 }
@@ -34,20 +32,50 @@ function operate(firstNumber, secondNumber, operation) {
         case '*':
             return multiply(first, second);
         case '/':
-            return divide(first, second);
+            if (second === 0) {
+                alert("Cannot divide by zero!")
+                return divide(first, 1); // needs to be changed!
+            } else {
+                return divide(first, second);
+            }
     }
 }
 
 function extractFromString(string) {
-    let breakpoint = /[+\-*/]/
+    const breakpoint = ["+", "-", "*", "/"];
+    const arr = string.split('');
 
-    let operator = string.match(breakpoint)[0];
-    let arr = string.split(breakpoint);
+    let operation = [];
+    let index = 0;
 
-    const first = arr[0];
-    const second = arr[1];
+    for (let i = 0; i < arr.length; i++) {
+        if (breakpoint.includes(arr[i])) {
+            let number = arr.slice(index, i).join('');
+            operation.push(number);
+            operation.push(arr[i]);
+            index = i + 1;
+        }
+    }
 
-    return [first, second, operator];
+    operation.push(arr.slice(index).join(''));
+
+    return operation;
+
+}
+
+function readOperation(operation) {
+    const operators = ["*", "/", "+", "-"]; // in order of priority.
+    let arr = operation.slice();
+
+    operators.forEach((op) => {
+        while (arr.includes(op)) {
+            let index = arr.indexOf(op)
+            let result = operate(arr[index - 1], arr[index + 1], arr[index]);
+            arr.splice(index - 1, 3, result);
+        }
+    })
+
+    return arr;
 }
 
 digits.forEach((digit) => {
@@ -55,9 +83,11 @@ digits.forEach((digit) => {
 })
 
 clear.addEventListener("click", () => {display.innerHTML = ""});
+
 result.addEventListener("click", () => {
-    input = display.innerHTML;
-    const components = extractFromString(input);
-    display.innerHTML = operate(components[0], components[1], components[2]);
+    const input = display.innerHTML;
+    const arr = extractFromString(input);
+    const result = readOperation(arr);
+    display.innerHTML = (Math.round( result * 100)/100).toFixed(2);
 });
 
