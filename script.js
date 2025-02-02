@@ -1,6 +1,7 @@
 const digits = document.querySelectorAll(".digit");
 const display =  document.querySelector(".display");
 const clear = document.querySelector(".clear");
+const remove = document.querySelector(".delete");
 const result = document.querySelector(".result");
 
 function add(first, second) {
@@ -83,6 +84,10 @@ digits.forEach((digit) => {
 })
 
 clear.addEventListener("click", () => {display.innerHTML = ""});
+
+remove.addEventListener("click", () => {
+    display.innerHTML = display.innerHTML.slice(0, -1);
+});
 
 result.addEventListener("click", () => {
     const input = display.innerHTML;
