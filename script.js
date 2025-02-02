@@ -2,6 +2,7 @@ const digits = document.querySelectorAll(".digit");
 const display =  document.querySelector(".display");
 const clear = document.querySelector(".clear");
 const remove = document.querySelector(".delete");
+const decimal  = document.querySelector(".decimal");
 const result = document.querySelector(".result");
 
 function add(first, second) {
@@ -88,6 +89,15 @@ clear.addEventListener("click", () => {display.innerHTML = ""});
 remove.addEventListener("click", () => {
     display.innerHTML = display.innerHTML.slice(0, -1);
 });
+
+decimal .addEventListener("click", () => {
+    const lastDigit = extractFromString(display.innerHTML).slice(-1);
+    if (lastDigit[0].includes(".") || lastDigit[0] === '') {
+        alert("Cannot add comma!")
+    } else {
+        display.innerHTML += ".";
+    }
+})
 
 result.addEventListener("click", () => {
     const input = display.innerHTML;

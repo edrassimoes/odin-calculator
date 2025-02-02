@@ -28,15 +28,6 @@
     font-size: 20px;
 }
 
-.functions {
-    width: 100%;
-    gap: 10px;
-}
-
-.wide {
-    flex: 1;
-}
-
 .keys {
     flex-direction: row;
     gap: 10px;
